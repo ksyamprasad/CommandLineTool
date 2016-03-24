@@ -1,0 +1,14 @@
+{
+  "name": "CommandLineTool",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ajax-request": "^1.2.1",
+    "express": "^3.21.2",
+    "json-parser": "^1.1.5"
+  },
+  "author": "Syam prasad K<syam.tvada@gmail.com>"
+}
