@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "ajax-request": "^1.2.1",
+    "async": "^1.5.2",
     "express": "^3.21.2",
     "json-parser": "^1.1.5"
   },
