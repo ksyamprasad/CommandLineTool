@@ -15,16 +15,9 @@ app.listen(config.port);
 
 console.log("Application is running at : " + config.url);
 
-console.log("Hey! Please input any one of the following:");
+console.log("Hey! Please input any word as following:");
 
-console.log("\t 1.'def <word>'  for definition of a word");
-console.log("\t 2.'syn <word>'  for synonyms of a word");
-console.log("\t 3.'ant <word>'  for antonyms of a word");
-console.log("\t 4.'ex <word>'   for example usage of a word");
-console.log("\t 5.'dict <word>' or '<word>' for the above details of a word");
-console.log("\t 6.'wod' 		for word of the day");
-console.log("\t 7.'play' 		to play a word game.");
-console.log("\t 8.'quit' 		to quit from here");
+WordDetails.displayMenu();
 
 process.stdin.resume();
 process.stdin.setEncoding("utf8");
@@ -37,44 +30,48 @@ process.stdin.on("data", function (text) {
 		entered_text[i] = entered_text[i].trim();
 	}
   
-	if (text.trim() === 'quit') {
+	if (text.trim() === "quit" || text.trim() === "N" ||text.trim() === "n" ) {
 		done();
 	}
-  
-	switch(entered_text[0])
-	{
-	  	case "def" : 
-	  		WordDetails.getDefinition(entered_text[1],function(result){
-	  			console.log("Want to continue [Y/N]:");
-	  		});
-	  		break;
-		case "syn" : 
-			WordDetails.getSynonyms(entered_text[1],function(result){
-				console.log("Want to continue [Y/N]:");
-			});
-			break;
-		case "ant" : 
-			WordDetails.getAntonyms(entered_text[1],function(result){
-				console.log("Want to continue [Y/N]:");
-			});
-			break;
-		case "ex" : 
-			WordDetails.getExample(entered_text[1],function(result){
-				console.log("Want to continue [Y/N]:");
-			});
-			break;
-		case "dict" : 
-			WordDetails.getFullDIctionary(entered_text[1]);
-			break;
-		case "wod" : 
-			WordDetails.getWordOfTheDay();
-			break;
-		case "play" : 
-			WordDetails.play();
-			break;
-		default : 
-	  		WordDetails.getFullDIctionary(entered_text[0]);
-			break;
+	if (text.trim() === "Y" || text.trim() == "y"){
+		WordDetails.displayMenu();
+	}
+	else{
+		switch(entered_text[0])
+		{
+			case "def" : 
+		  		WordDetails.getDefinition(entered_text[1],function(result){
+		  			console.log("Want to continue [Y/N]:");
+		  		});
+		  		break;
+			case "syn" : 
+				WordDetails.getSynonyms(entered_text[1],function(result){
+					console.log("Want to continue [Y/N]:");
+				});
+				break;
+			case "ant" : 
+				WordDetails.getAntonyms(entered_text[1],function(result){
+					console.log("Want to continue [Y/N]:");
+				});
+				break;
+			case "ex" : 
+				WordDetails.getExample(entered_text[1],function(result){
+					console.log("Want to continue [Y/N]:");
+				});
+				break;
+			case "dict" : 
+				WordDetails.getFullDIctionary(entered_text[1]);
+				break;
+			case "wod" : 
+				WordDetails.getWordOfTheDay();
+				break;
+			case "play" : 
+				WordDetails.play();
+				break;
+			default : 
+		  		WordDetails.getFullDIctionary(entered_text[0]);
+				break;
+		}
 	}
 });
 

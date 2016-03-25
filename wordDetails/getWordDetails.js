@@ -175,3 +175,16 @@ this.getWordOfTheDay = function()
 		console.log(definitionOutPut);
 	});
 };
+
+this.displayMenu = function()
+{
+	console.log("\t 1.'def <word>'  for definition of a word");
+	console.log("\t 2.'syn <word>'  for synonyms of a word");
+	console.log("\t 3.'ant <word>'  for antonyms of a word");
+	console.log("\t 4.'ex <word>'   for example usage of a word");
+	console.log("\t 5.'dict <word>' or '<word>' for the above details of a word");
+	console.log("\t 6.'wod' 		for word of the day");
+	console.log("\t 7.'play' 		to play a word game. Still in implementation");
+	console.log("\t 8.'quit' 		to quit from here");
+	
+}
