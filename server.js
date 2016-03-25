@@ -34,22 +34,29 @@ process.stdin.on("data", function (text) {
   switch(entered_text[0])
   {
   	case "def" : console.log("definition");
-  			WordDetails.getDefinition(entered_text[1]);
+  		WordDetails.getDefinition(entered_text[1]);
 		 break;
   	case "syn" : console.log("synonyms");
-  				 break;
+  		WordDetails.getSynonyms(entered_text[1]);
+  		break;
   	case "ant" : console.log("antonynms");
-		 break;
+  		WordDetails.getAntonyms(entered_text[1]);
+		break;
   	case "ex"  : console.log("examples");
-		 break;
-  	case "dic" : console.log("details");
-		 break;
+  		Wordetails.getExample(entered_text[1]);
+		break;
+  	case "dict" : console.log("details");
+  		WordDetails.getFullDIctionary(entered_text[1]);
+		break;
   	case ""    : console.log("word of day");
-		 break;
+  		WordDetails.getWordOfTheDay(entered_text[1]);
+		break;
   	case "play": console.log("play");
-		 break;
+  		WordDetails.play(entered_text[1]);
+		break;
   	default : console.log("details with out specifying");
-		 break;
+  		WordDetails.getFullDIctionary(entered_text[1]);
+		break;
   }
 });
 
