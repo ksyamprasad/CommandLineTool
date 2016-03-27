@@ -11,6 +11,9 @@ var Parser = require("json-parser");
 
 var WordDetails = require("./wordDetails/getWordDetails.js");
 
+var isPlaying = false;
+var playWord;
+var hintCount = 0;
 app.listen(config.port);
 
 console.log("Application is running at : " + config.url);
@@ -29,14 +32,44 @@ process.stdin.on("data", function (text) {
 	for(var i=0; i<entered_text.length;i++){
 		entered_text[i] = entered_text[i].trim();
 	}
-  
+	
+	console.log(entered_text[0],this.playWord);
+	
 	if (text.trim() === "quit" || text.trim() === "N" ||text.trim() === "n" ) {
 		done();
 	}
-	if (text.trim() === "Y" || text.trim() == "y"){
+	else if (text.trim() === "Y" || text.trim() == "y"){
 		WordDetails.displayMenu();
 	}
+	else if(this.isPlaying == true && entered_text[0] == playWord){
+		this.isPlaying = false;
+		console.log("You entered correct one.");
+		console.log("Wanna play again [Y?N]?");
+	}
+	else if(this.isPlaying == true && entered_text[0] == 'hint'){
+		this.hintCount = this.hintCount + 1;
+		//var wordLength  = playWord.length;
+		console.log("first letter of the word is:"+this.playWord.charAt(0));
+		console.log("last letter of the word is:"+this.playWord.charAt(this.playWord.length-1));
+		console.log("hint count:"+this.hintCount);
+		if(hintCount == 1){
+			getWordDetails.provideHint(playWord);
+		}
+		if(hintCount == 2){
+			this.hintCount = 0;
+			console.log("Sorry, No more hints.");
+			console.log("The word is:"+playWord);
+			wordDetails.getFullDIctionary(playWord,function(result){
+				console.log("Want to continue [Y/N]:");
+			});
+			this.isPlaying = false;
+		}
+	}
+	else if(this.isPlaying == true && entered_text[0] != playWord){
+		console.log("incorrect please try again by looking at the details above or enter 'hint'(two times only) to get some help or enter 'quit' to exit from game.");
+	}
 	else{
+		var self = this;
 		switch(entered_text[0])
 		{
 			case "def" : 
@@ -60,16 +93,27 @@ process.stdin.on("data", function (text) {
 				});
 				break;
 			case "dict" : 
-				WordDetails.getFullDIctionary(entered_text[1]);
+				WordDetails.getFullDIctionary(entered_text[1],function(result){
+					console.log("Want to continue [Y/N]:");
+				});
 				break;
 			case "wod" : 
-				WordDetails.getWordOfTheDay();
+				WordDetails.getWordOfTheDay(function(result){
+					console.log("Want to continue [Y/N]:");
+				});
 				break;
 			case "play" : 
-				WordDetails.play();
+				WordDetails.play(function(result){
+					self.isPlaying = true;
+					self.playWord = result;
+					console.log("word is:"+self.playWord);
+					console.log("Enter the word:");
+				});
 				break;
 			default : 
-		  		WordDetails.getFullDIctionary(entered_text[0]);
+		  		WordDetails.getFullDIctionary(entered_text[0],function(result){
+					console.log("Want to continue [Y/N]:");
+				});
 				break;
 		}
 	}

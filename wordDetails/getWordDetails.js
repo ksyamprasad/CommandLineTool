@@ -70,7 +70,7 @@ this.getSynonyms = function(word,callback)
 			callback(null);
 		}
 		else{
-			console.log("\nUnable to find synonyms of given word");
+			console.log("\nNo synonyms for given word");
 			callback(null);
 		}
 	});
@@ -97,7 +97,7 @@ this.getAntonyms = function(word,callback)
 			callback(null);
 		}
 		else{
-			console.log("\nUnable to find antonyms of given word");
+			console.log("\n No antonyms for given word");
 			callback(null);
 		}
 	});	
@@ -123,7 +123,7 @@ this.getExample = function(word,callback)
 		}
 	});
 };
-this.getFullDIctionary = function(word)
+this.getFullDIctionary = function(word,callback)
 {
 	var self = this;
 	
@@ -145,10 +145,11 @@ this.getFullDIctionary = function(word)
 		}
 	], function(error, result){
 		//console.log("error:"+error)
+		callback(null);
 	});
 };
 
-this.getWordOfTheDay = function()
+this.getWordOfTheDay = function(callback)
 {
 	var date = new Date();
 	
@@ -173,6 +174,7 @@ this.getWordOfTheDay = function()
 			definitionOutPut = definitionOutPut + i + "." + definitions[i].text;
 		}
 		console.log(definitionOutPut);
+		callback(null);
 	});
 };
 
@@ -187,4 +189,55 @@ this.displayMenu = function()
 	console.log("\t 7.'play' 		to play a word game. Still in implementation");
 	console.log("\t 8.'quit' 		to quit from here");
 	
-}
+};
+
+this.play = function(callback)
+{
+	var self = this;
+	var url = "http://api.wordnik.com:80/v4/words.json/randomWord?hasDictionaryDef=false&minCorpusCount=0&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=-1&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5";
+	
+	console.log("Wanna play! guess the word based on its definition, synonyms/antonyms");
+	
+	this.fetchUrl(url, function(response){
+		if(typeof response != undefined){
+			//console.log(response.word);
+			
+			async.waterfall([
+			         		function(callback){
+			         			self.getDefinition(response.word,callback);
+			         		},
+			         		
+			         		function(callback){
+			         			self.getSynonyms(response.word,callback);
+			         		},
+			         		
+			         		function(callback){
+			         			self.getAntonyms(response.word,callback);
+			         		}
+			         	], function(error, result){
+			         		//console.log("error:"+error)
+			         		callback(response.word);
+			         	});
+		}
+		else{
+			console.log("\nUnable to play now.");
+			callback(null);
+		}
+	});
+};
+
+this.provideHint = function(playingWord)
+{
+	var arrWord = playingWord.split("");
+	var wordLength  = arrWord.length;
+
+	for(var i = wordLength - 1; i > 0; i--) {
+	    var j = Math.floor(Math.random() * (i + 1));
+	    var tmp = a[i];
+	    a[i] = a[j];
+	    a[j] = tmp;
+	}
+	
+	arrWord.join("");
+	console.log("The jumble of the word is:"+arrWord);
+};
