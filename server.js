@@ -33,8 +33,6 @@ process.stdin.on("data", function (text) {
 		entered_text[i] = entered_text[i].trim();
 	}
 	
-	console.log(entered_text[0],this.playWord);
-	
 	if (text.trim() === "quit" || text.trim() === "N" ||text.trim() === "n" ) {
 		done();
 	}
@@ -106,7 +104,6 @@ process.stdin.on("data", function (text) {
 				WordDetails.play(function(result){
 					self.isPlaying = true;
 					self.playWord = result;
-					console.log("word is:"+self.playWord);
 					console.log("Enter the word:");
 				});
 				break;
